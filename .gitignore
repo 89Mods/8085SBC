@@ -1,0 +1,7 @@
+*.lst
+*.bin
+*.hex
+*.class
+Emu8085/bin/
+Emu8085/obj/
+readback.dat
