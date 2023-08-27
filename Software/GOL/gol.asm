@@ -111,7 +111,11 @@ F_BUFF_END equ (F_BUFF_START+F_BUFF_LEN)
 
 	org 33024
 start:
+	jmp actual_start
+int_handler:
 	nop
+	ret
+actual_start:
 	
 	lxi h, enter_seed_text
 	call PUTS

@@ -194,6 +194,12 @@ function_table: org 64
 	jmp xorshift ; 126
 	org 196
 main:
+	; Interrupt config - Disable all.
+	mvi a, 11011111b
+	sim
+	ei
+	
+	; Init XORSHIFT seed
 	lxi h, XS_STATE0
 	mvi a, 0x08
 	mov m, a
@@ -263,11 +269,6 @@ main:
 	out PORTC
 	mvi l, PC_SHADOW
 	mov m, a
-
-	; Interrupt config - Disable all. They’re all broken except trap.
-	mvi a, 11011111b
-	sim
-	ei
 
 	call init_8251
 	lxi h, init_text
@@ -339,7 +340,7 @@ halt:
 
 timer_int_handler:
 	push psw
-	; TODO: Hand over to booted program
+	call HI_MEM_START+3
 	mvi a, 16
 	sim
 	pop psw
