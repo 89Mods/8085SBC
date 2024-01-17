@@ -55,7 +55,7 @@ SL_CS1 equ 32
 
 MEM_START equ 32768
 HI_MEM_START equ 33024
-E_OUT_SHADOW equ 0
+EXTRA_OUTS_SHADOW equ 0
 CS_SHADOW equ 1
 PC_SHADOW equ 2
 COUNTER equ 3
@@ -248,7 +248,7 @@ main:
 	mov l, h
 	mvi a, 00111001b
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	; Start timer, clear COUNTER value
 	mvi a, 255
@@ -589,7 +589,7 @@ spi_transfer:
 
 	mov e, a
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-SPI_CLK-SPI_DO
 	mov m, a
@@ -636,7 +636,7 @@ spi_receive:
 
 	mvi e, 0
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-SPI_CLK-SPI_DO
 	mov m, a
@@ -715,7 +715,7 @@ i2c_begin:
 	out IO_CS
 	mov m, a
 
-	mvi l, E_OUT_SHADOW
+	mvi l, EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-I2C_SDA_O
 	mvi h, 255
@@ -733,7 +733,7 @@ i2c_begin:
 i2c_end:
 	push h
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-I2C_SDA_O
 	mvi h, 255
@@ -744,7 +744,7 @@ i2c_end:
 	call i2c_delay
 	ori I2C_SDA_O
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	call i2c_delay
 
@@ -754,7 +754,7 @@ i2c_end:
 i2c_restart:
 	push h
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ori I2C_SDA_O
 	mvi h, 255
@@ -770,7 +770,7 @@ i2c_restart:
 
 	ani 255-I2C_SCL
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	call i2c_delay
 
@@ -785,7 +785,7 @@ i2c_transfer:
 
 	mov e, a
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-I2C_SDA_O-I2C_SCL
 	mov d, a
@@ -839,7 +839,7 @@ i2c_transfer_end:
 
 	mov a, d
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	call i2c_delay
 
@@ -857,7 +857,7 @@ i2c_receive:
 
 	mov b, a
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-I2C_SCL
 	ori I2C_SDA_O
@@ -911,7 +911,7 @@ i2c_receive_ack:
 	call i2c_delay
 	ani 255-I2C_SDA_O
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	call i2c_delay
 
@@ -952,7 +952,7 @@ sl_write:
 	mov e, m ; PORTC shadow in E
 
 	; Select
-	mvi l, E_OUT_SHADOW
+	mvi l, EXTRA_OUTS_SHADOW
 	mov a, m
 	mov d, a ; Back-up 573 shadow in D
 	ani 255-SL_CS1
@@ -971,7 +971,7 @@ sl_write:
 	mov a, d
 	ori SL_CS1
 	mov m, a
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov m, a
 	call sl_delay
 
@@ -1002,7 +1002,7 @@ sl_read:
 	mov e, m ; PORTC shadow in E
 
 	; Select
-	mvi l, E_OUT_SHADOW
+	mvi l, EXTRA_OUTS_SHADOW
 	mov a, m
 	mov d, a ; Back-up 573 shadow in D
 	ani 255-SL_CS1
@@ -1025,7 +1025,7 @@ sl_read:
 	mov m, a
 
 	; TEMP
-	lxi h, E_OUT_SHADOW
+	lxi h, EXTRA_OUTS_SHADOW
 	mov m, a
 
 	mov a, e
@@ -1122,7 +1122,7 @@ spi_rom_get_id:
 	push h
 	push d
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-SPI_CS-SPI_DO-SPI_CLK
 	mov m, a
@@ -1139,7 +1139,7 @@ spi_rom_get_id:
 	call spi_receive
 	mov d, a
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ori SPI_CS
 	mov m, a
@@ -1157,7 +1157,7 @@ spi_rom_get_id:
 spi_rom_read_begin:
 	push h
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-SPI_CS-SPI_DO-SPI_CLK
 	mov m, a
@@ -1180,7 +1180,7 @@ spi_rom_read_begin:
 spi_rom_select:
 	push h
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ani 255-SPI_CS-SPI_DO-SPI_CLK
 	mov m, a
@@ -1194,7 +1194,7 @@ spi_rom_select:
 spi_rom_deselect:
 	push h
 
-	lxi h, MEM_START+E_OUT_SHADOW
+	lxi h, MEM_START+EXTRA_OUTS_SHADOW
 	mov a, m
 	ori SPI_CS
 	mov m, a
@@ -2019,47 +2019,27 @@ div_48x32_loop:
 	lhld MD_TEMP0
 	xchg
 	lhld MD_TEMP2
-	mov a, e
 	ora a
-	ral
-	mov e, a
-	mov a, d
-	ral
-	mov d, a
-	mov a, l
-	ral
-	mov l, a
-	mov a, h
-	ral
-	mov h, a
-	shld MD_TEMP2
+	db 0x10 ;rdel
 	xchg
+	db 0x10 ;rdel
 	shld MD_TEMP0
+	xchg
+	shld MD_TEMP2
 	lhld MD_TEMP4
 	xchg
 	lhld MD_TEMP6
-	mov a, e
-	ral
-	mov e, a
-	mov a, d
-	ral
-	mov d, a
-	mov a, l
-	ral
-	mov l, a
-	mov a, h
-	ral
-	mov h, a
+	db 0x10 ;rdel
+	xchg
+	db 0x10 ;rdel
+	shld MD_TEMP4
+	xchg
 	shld MD_TEMP6
 	xchg
-	shld MD_TEMP4
 	lhld MD_TEMP8
-	mov a, l
-	ral
-	mov l, a
-	mov a, h
-	ral
-	mov h, a
+	xchg
+	db 0x10 ;rdel
+	xchg
 	shld MD_TEMP8
 	; 32-bit compare, 32-bit value still in HL (high), DE (low) at this point
 	mov b, h
@@ -2296,20 +2276,31 @@ itoa32_conv_loop:
 	adc b
 	mov b, a
 	lxi d, DIN10
+	push h
+	add a
+	add a
+	add c
+	mov c, a
+	mvi a, 0
+	adc b
+	mov b, a
+	lxi d, DIN10
 	ldax b
-	stax d
+	mov h, a
 	inx b
+	ldax b
+	mov l, a
+	inx b
+	db 0xD9 ; shlx
+	inx d
 	inx d
 	ldax b
-	stax d
+	mov h, a
 	inx b
-	inx d
 	ldax b
-	stax d
-	inx b
-	inx d
-	ldax b
-	stax d
+	mov l, a
+	db 0xD9 ; shlx
+	pop h
 	; run division, and obtain result
 	call div_32x32
 	lda DRES0

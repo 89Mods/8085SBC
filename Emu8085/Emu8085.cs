@@ -850,6 +850,24 @@ namespace Tholin8085 {
 				H = (res >> 8) & 255;
 				carry = res > 65535 ? 1U : 0U;
 			}
+			else if(instr == 0x10) {
+				//RDEL
+				uint combined = (D << 8) | E;
+				//Console.WriteLine($"a: {combined} - {carry}");
+				combined <<= 1;
+				combined |= carry;
+				carry = (combined >> 16) & 1;
+				combined &= 0xFFFF;
+				E = combined & 255;
+				D = combined >> 8;
+				//Console.WriteLine($"b: {combined} - {carry}");
+			}
+			else if(instr == 0xD9) {
+				//SHLX
+				uint addr = (D << 8) | E;
+				MemWrite(addr, H);
+				MemWrite(addr + 1, L);
+			}
 			else if(instr != 0) {
 				Console.WriteLine($"Invalid opcode {Convert.ToString(instr, 16)}");
 				Environment.Exit(1);
